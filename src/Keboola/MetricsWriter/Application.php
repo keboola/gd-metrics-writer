@@ -22,23 +22,11 @@ class Application
     public function run()
     {
         $writer = new Writer($this->config['parameters']);
-
         $tables = $this->config['storage']['input']['tables'];
 
         foreach ($tables as $table) {
-
             $csv = new CsvFile($this->getSourceFileName($table));
-            $csv->next();
-
-            $header = $csv->current();
-            $processor = Processor::getCsvRowProcessor($header);
-
-            $csv->next();
-
-            while ($csv->current() != null) {
-                $writer->write($processor($csv->current()));
-                $csv->next();
-            }
+            $writer->write($csv);
         }
     }
 

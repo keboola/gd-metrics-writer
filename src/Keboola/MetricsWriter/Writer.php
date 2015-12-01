@@ -8,6 +8,7 @@
 
 namespace Keboola\MetricsWriter;
 
+use Keboola\Csv\CsvFile;
 use KeenIO\Client\KeenIOClient;
 
 class Writer
@@ -28,9 +29,22 @@ class Writer
         ]);
     }
 
-    public function write($data)
+    public function write(CsvFile $csv)
     {
-        $this->client->addEvent($this->collectionName, $data);
-    }
+        $csv->next();
+        $header = $csv->current();
+        $processor = Processor::getCsvRowProcessor($header);
+        $csv->next();
 
+        while ($csv->current() != null) {
+
+            $batch = [];
+            for ($i=0; $i<1000 && $csv->current() != null; $i++) {
+                $batch[] = $processor($csv->current());
+                $csv->next();
+            }
+
+            $this->client->addEvents([$this->collectionName => $batch]);
+        }
+    }
 }
