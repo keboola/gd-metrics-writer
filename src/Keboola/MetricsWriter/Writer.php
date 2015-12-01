@@ -9,6 +9,7 @@
 namespace Keboola\MetricsWriter;
 
 use Keboola\Csv\CsvFile;
+use Keboola\Juicer\Common\Logger;
 use KeenIO\Client\KeenIOClient;
 
 class Writer
@@ -36,15 +37,18 @@ class Writer
         $processor = Processor::getCsvRowProcessor($header);
         $csv->next();
 
+        $eventsCnt = 0;
         while ($csv->current() != null) {
-
             $batch = [];
             for ($i=0; $i<1000 && $csv->current() != null; $i++) {
                 $batch[] = $processor($csv->current());
                 $csv->next();
             }
 
-            $this->client->addEvents([$this->collectionName => $batch]);
+            $result = $this->client->addEvents([$this->collectionName => $batch]);
+            $eventsCnt += count($result['gooddata-metrics']);
         }
+
+        Logger::log('info', sprintf('Created %s events.', $eventsCnt));
     }
 }
