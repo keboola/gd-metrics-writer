@@ -17,7 +17,7 @@ class Processor
 
         return function ($row) use ($colNumbers) {
             $res = [];
-            $res['dataSizeBytes'] = doubleval($row[$colNumbers['g_projectSizeMB']]);
+            $res['dataSizeBytes'] = doubleval($row[$colNumbers['g_projectSizeMB']] * 1024);
             $res['rowsCount'] = intval($row[$colNumbers['g_projectRows']]);
             $res['usersCount'] = intval($row[$colNumbers['g_users']]);
             $res['kbc'] = [
@@ -26,8 +26,7 @@ class Processor
                     'name' => $row[$colNumbers['projectName']]
                 ],
                 'configuration' => [
-                    'id' => $row[$colNumbers['writerId']],
-                    'name' => $row[$colNumbers['g_project_name']]
+                    'id' => $row[$colNumbers['writerId']]
                 ]
             ];
             $res['created'] = date('c');
