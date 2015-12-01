@@ -2,6 +2,9 @@
 FROM keboola/base-php56
 MAINTAINER Miro Cillik <miro@keboola.com>
 
+# Instal dependcies
+RUN yum -y --enablerepo=epel,remi,remi-php56 install php-mcrypt
+
 # Run writer
 ADD . /app
 WORKDIR /app
