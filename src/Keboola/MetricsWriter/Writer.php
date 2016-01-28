@@ -21,7 +21,7 @@ class Writer
 
     private $dataFolder;
 
-    public function __construct(array $params)
+    public function __construct(array $params, $dataFolder)
     {
         $this->client = KeenIOClient::factory([
             'projectId' => $params['keenio']['projectId'],
@@ -30,6 +30,8 @@ class Writer
         ]);
 
         $this->processorConfig = $params['processors'];
+
+        $this->dataFolder = $dataFolder;
     }
 
     /**

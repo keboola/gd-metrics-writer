@@ -21,7 +21,7 @@ class Processor
     public function getProcessor($header)
     {
         $functionName = 'get' . ucfirst($this->type) . 'Processor';
-        return $functionName($header);
+        return $this->$functionName($header);
     }
 
     public static function getMainProcessor($header)
