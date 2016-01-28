@@ -29,7 +29,7 @@ class Writer
             'readKey'   => $params['keenio']['readKey']
         ]);
 
-        $this->processorConfig = $params['processor'];
+        $this->processorConfig = $params['processors'];
     }
 
     /**
