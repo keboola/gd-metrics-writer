@@ -8,8 +8,6 @@
 
 namespace Keboola\MetricsWriter;
 
-use Keboola\Csv\CsvFile;
-
 class Application
 {
     private $config;
@@ -21,22 +19,11 @@ class Application
 
     public function run()
     {
-        $writer = new Writer($this->config['parameters']);
+        $writer = new Writer($this->config['parameters'], $this->config['dataFolder']);
         $tables = $this->config['storage']['input']['tables'];
 
         foreach ($tables as $table) {
-            $csv = new CsvFile($this->getSourceFileName($table));
-            $writer->write($csv);
+            $writer->write($table);
         }
     }
-
-    private function getSourceFileName($tableConfig)
-    {
-        $dataFolder = $this->config['dataFolder'] . '/in/tables/';
-        if (isset($tableConfig['destination'])) {
-            return $dataFolder . $tableConfig['destination'];
-        }
-        return $dataFolder . $tableConfig['source'] . '.csv';
-    }
-
 }
