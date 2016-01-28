@@ -37,9 +37,6 @@ class Processor
                 'project' => [
                     'id' => $row[$colNumbers['projectId']],
                     'name' => $row[$colNumbers['projectName']]
-                ],
-                'configuration' => [
-                    'id' => $row[$colNumbers['writerId']]
                 ]
             ];
             $res['created'] = date('c');
